@@ -5,45 +5,38 @@ from itertools import product
 import torch
 from torch import nn
 
-class TCDSampler_step(torch.nn.Module):
-    def __init__(self, eta=0.0):
-        super(TCDSampler_step, self).__init__()
-        self.eta = eta  # Controls the amount of stochasticity
-
-    def forward(self, x, sigma, sigma_next, denoised, noise_sampler):
-        # Calculate alpha values from sigma (representing noise level at current and next steps)
-        alpha = 1.0 - sigma**2
-        alpha_next = 1.0 - sigma_next**2
-
-        if self.eta > 0 and sigma_next > 0:
-            # Generate additional noise based on current and next sigma levels
-            additional_noise = noise_sampler(sigma, sigma_next)
-            
-            # Scale additional noise by eta and adjust for cumulative impact of noise
-            noise_adjustment = self.eta * additional_noise
-
-            return denoised + noise_adjustment
-        else:
-            # If eta is zero or sigma_next is not positive, simply return the denoised estimate
-            return denoised
-
 @torch.no_grad()
 def sample_tcd(model, x, sigmas, extra_args=None, callback=None, disable=None, noise_sampler=None, eta=0.3):
-    # Step function with eta
-    step_function = TCDSampler_step(eta=eta) #.to(x.device)
     s_in = x.new_ones([x.shape[0]])
     noise_sampler = default_noise_sampler(x) if noise_sampler is None else noise_sampler
+    steps = len(sigmas)-1
+    for i in trange(steps, disable=disable):  # Reverse diffusion steps
+        # Adjusted Timestep Calculation (Strategic Stochastic Sampling):
+        ii = int((1 - eta) * i)
 
-    for i in trange(len(sigmas)-1, disable=disable):  # Reverse diffusion steps
-        # Generate denoising estimation from the model
-        denoised = model(x, sigmas[i] * s_in, **extra_args)
+        s0 = sigmas[i]
+        s1 = sigmas[i + 1]
+
+        # Generate denoised estimate from the model
+        x = model(x, s0 * s_in, **extra_args)
 
         # Callback for progress monitoring/logging
         if callback is not None:
-            callback({'x': x, 'i': i, 'sigma': sigmas[i], 'denoised': denoised})
+            callback({'x': x, 'i': i, 'sigma': s0, 'denoised': x})
 
-        # Use the TCDSampler_step to perform the reverse diffusion step
-        x = step_function(x, sigmas[i], sigmas[i + 1], denoised, noise_sampler)
+        if eta > 0 and s1 > 0:
+            # introduce stochasticity
+            noise = noise_sampler(s0, s1)
+            # sigma = std; beta = variance; alpha = 1.0 - beta = 1 - sigma**2
+            a0 = 1.0 - s0**2
+            a1 = 1.0 - s1**2
+            a0s = 1.0 - sigmas[ii]
+            # adjusted variance scaling
+            v = a0*a1 / a0s # cumulative alpha product rescaled by the adjusted timestep
+            deterministic = v.sqrt() * x
+            stochastic = (1 - v).sqrt() * noise
+            x = deterministic + stochastic
+
     return x
 
 class TCDScheduler:
