@@ -1,8 +1,9 @@
 # ComfyUI-tcd-scheduler
 
-ComfyUI Custom Sampler nodes that adds TCD with eta
+ComfyUI Custom Sampler nodes that implement Zheng et al's Trajectory Consistency Distillation based on https://mhh0318.github.io/tcd
 
-This custom node repository adds LCMScheduler to the Custom Sampler category.
+This custom node repository adds TCDScheduler and SamplerTCD nodes to the Custom Sampler category.
+
 Just clone it into your custom_nodes folder and you can start using it as soon as you restart ComfyUI.
 
 LCMScheduler has one special parameter:
