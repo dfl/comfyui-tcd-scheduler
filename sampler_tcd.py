@@ -8,36 +8,42 @@ from torch import nn
 class TCDSampler_step(torch.nn.Module):
     def __init__(self, eta=0.0):
         super(TCDSampler_step, self).__init__()
-        self.eta = eta
-    
+        self.eta = eta  # Controls the amount of stochasticity
+
     def forward(self, x, sigma, sigma_next, denoised, noise_sampler):
-        # Generate additional noise based on sigma and sigma_next
+        # Calculate alpha values from sigma (representing noise level at current and next steps)
+        alpha = 1.0 - sigma**2
+        alpha_next = 1.0 - sigma_next**2
+
         if self.eta > 0 and sigma_next > 0:
+            # Generate additional noise based on current and next sigma levels
             additional_noise = noise_sampler(sigma, sigma_next)
-            # Apply eta adjustment to additional noise
-            x = denoised + self.eta * additional_noise
+            
+            # Scale additional noise by eta and adjust for cumulative impact of noise
+            noise_adjustment = self.eta * additional_noise
+
+            return denoised + noise_adjustment
         else:
-            # If eta=0 or sigma_next<=0, use the denoised estimation directly
-            x = denoised
-        return x
+            # If eta is zero or sigma_next is not positive, simply return the denoised estimate
+            return denoised
 
 @torch.no_grad()
 def sample_tcd(model, x, sigmas, extra_args=None, callback=None, disable=None, noise_sampler=None, eta=0.3):
-    step_function = TCDSampler_step(eta=eta)
+    # Step function with eta
+    step_function = TCDSampler_step(eta=eta) #.to(x.device)
     s_in = x.new_ones([x.shape[0]])
     noise_sampler = default_noise_sampler(x) if noise_sampler is None else noise_sampler
 
-    for i in trange(len(sigmas) - 1, disable=disable):
-        # Forward model to generate denoising estimation
+    for i in trange(len(sigmas)-1, disable=disable):  # Reverse diffusion steps
+        # Generate denoising estimation from the model
         denoised = model(x, sigmas[i] * s_in, **extra_args)
 
-        # Call step_function with all necessary parameters including noise_sampler
-        x = step_function(x, sigmas[i], sigmas[i + 1], denoised, noise_sampler)
-
-        # Invoke the callback with current progress data after denoised estimation
+        # Callback for progress monitoring/logging
         if callback is not None:
             callback({'x': x, 'i': i, 'sigma': sigmas[i], 'denoised': denoised})
 
+        # Use the TCDSampler_step to perform the reverse diffusion step
+        x = step_function(x, sigmas[i], sigmas[i + 1], denoised, noise_sampler)
     return x
 
 class TCDScheduler:
