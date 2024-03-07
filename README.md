@@ -1,6 +1,6 @@
-# ComfyUI-tcd-scheduler
+# ComfyUI-TCD-scheduler
 
-ComfyUI Custom Sampler nodes that implement Zheng et al's Trajectory Consistency Distillation based on https://mhh0318.github.io/tcd
+ComfyUI Custom Sampler nodes that implement Zheng et al.'s Trajectory Consistency Distillation based on https://mhh0318.github.io/tcd
 
 This custom node repository adds TCDScheduler and SamplerTCD nodes to the Custom Sampler category.
 
