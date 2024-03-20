@@ -34,11 +34,11 @@ def sample_tcd(model, x, sigmas, extra_args=None, callback=None, disable=None, n
         # same as euler ancestral
         d = to_d(x, sigma_from, denoised)
         dt = sigma_down - sigma_from
-        x = x + d * dt
+        x += d * dt
 
         # similar to LCM
         if sigma_to > 0 and gamma > 0:
-            x = x + noise_sampler(sigma_from, sigma_to) * sigma_up
+            x += noise_sampler(sigma_from, sigma_to) * sigma_up
     return x
 
 class TCDScheduler:
