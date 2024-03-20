@@ -8,7 +8,9 @@ Just clone it into your custom_nodes folder and you can start using it as soon a
 
 LCMScheduler has one special parameter:
 
-- `eta`, a stochastic parameter (referred to as `gamma` in the paper) used to control the stochasticity in every step.
-  When eta = 0, it represents deterministic sampling, whereas eta = 1 indicates full stochastic sampling.
+- `gamma`, a parameter used to control the stochasticity in every step.
+  When gamma = 0, it represents deterministic sampling, whereas gamma = 1 indicates full stochastic sampling.
 
-  The default value is 0.3, but it is recommend using a higher eta when increasing the number of inference steps.
+  The default value is 0.3, but it is recommend using a higher value when increasing the number of inference steps.
+
+Thanks to @laksjdjf for their help with converting from sigmas to timestep
