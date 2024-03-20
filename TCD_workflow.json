@@ -1,6 +1,6 @@
 {
-  "last_node_id": 337,
-  "last_link_id": 924,
+  "last_node_id": 338,
+  "last_link_id": 925,
   "nodes": [
     {
       "id": 88,
@@ -40,77 +40,11 @@
       }
     },
     {
-      "id": 244,
-      "type": "VAEDecode",
-      "pos": [
-        1520,
-        510
-      ],
-      "size": {
-        "0": 140,
-        "1": 50
-      },
-      "flags": {},
-      "order": 10,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "samples",
-          "type": "LATENT",
-          "link": 683
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 910
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            768
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "VAEDecode"
-      }
-    },
-    {
-      "id": 295,
-      "type": "PreviewImage",
-      "pos": [
-        1700,
-        510
-      ],
-      "size": {
-        "0": 770,
-        "1": 800
-      },
-      "flags": {},
-      "order": 11,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 768
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "PreviewImage"
-      }
-    },
-    {
       "id": 233,
       "type": "EmptyLatentImage",
       "pos": [
-        860,
-        590
+        1108.794003173828,
+        108.35597851562493
       ],
       "size": {
         "0": 210,
@@ -143,8 +77,8 @@
       "id": 4,
       "type": "CheckpointLoaderSimple",
       "pos": [
-        40,
-        320
+        288.7940031738281,
+        -161.64402148437506
       ],
       "size": {
         "0": 290,
@@ -190,8 +124,8 @@
       "id": 335,
       "type": "LoraLoaderModelOnly",
       "pos": [
-        450,
-        280
+        698.7940031738283,
+        -201.644021484375
       ],
       "size": {
         "0": 315,
@@ -228,43 +162,11 @@
       ]
     },
     {
-      "id": 333,
-      "type": "SamplerTCD",
-      "pos": [
-        780,
-        750
-      ],
-      "size": {
-        "0": 315,
-        "1": 58
-      },
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "SAMPLER",
-          "type": "SAMPLER",
-          "links": [
-            909
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "SamplerTCD"
-      },
-      "widgets_values": [
-        0.3
-      ]
-    },
-    {
       "id": 332,
       "type": "TCDScheduler",
       "pos": [
-        791,
-        857
+        1039.794003173828,
+        375.355978515625
       ],
       "size": {
         "0": 315,
@@ -302,8 +204,8 @@
       "id": 240,
       "type": "SamplerCustom",
       "pos": [
-        1122,
-        492
+        1370.7940031738285,
+        10.355978515624983
       ],
       "size": {
         "0": 361.8183288574219,
@@ -379,8 +281,8 @@
       "id": 334,
       "type": "CLIPSetLastLayer",
       "pos": [
-        18,
-        543
+        266.7940031738281,
+        61.35597851562491
       ],
       "size": {
         "0": 315,
@@ -416,55 +318,16 @@
       ]
     },
     {
-      "id": 336,
-      "type": "CLIPTextEncode",
-      "pos": [
-        372,
-        503
-      ],
-      "size": [
-        393,
-        101
-      ],
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 921
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            922
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        "cinematic photo of man wearing a purple hoodie, red hair, POV, looking at viewer. 35mm photograph, film, bokeh, professional, 4k, highly detailed"
-      ]
-    },
-    {
       "id": 337,
       "type": "CLIPTextEncode",
       "pos": [
-        371,
-        660
+        619.7940031738284,
+        178.35597851562494
       ],
-      "size": [
-        393,
-        97
-      ],
+      "size": {
+        "0": 393,
+        "1": 97
+      },
       "flags": {},
       "order": 8,
       "mode": 0,
@@ -490,7 +353,171 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        "drawing, painting, crayon, sketch, graphite, impressionist, noisy, blurry, soft, deformed, ugly, watermark, female, girl, woman, feminine, makeup"
+        "oil painting, blurry"
+      ]
+    },
+    {
+      "id": 336,
+      "type": "CLIPTextEncode",
+      "pos": [
+        620.7940031738284,
+        21.355978515624997
+      ],
+      "size": {
+        "0": 393,
+        "1": 101
+      },
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 921
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            922
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "landscape of a cabin in the forest, dappled light, photograph, best quality"
+      ]
+    },
+    {
+      "id": 295,
+      "type": "PreviewImage",
+      "pos": [
+        1977.7940031738285,
+        -37.644021484375
+      ],
+      "size": {
+        "0": 770,
+        "1": 800
+      },
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 768
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 244,
+      "type": "VAEDecode",
+      "pos": [
+        1768.7940031738285,
+        28.355978515624997
+      ],
+      "size": {
+        "0": 140,
+        "1": 50
+      },
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 683
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 910
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            768,
+            925
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 338,
+      "type": "SaveImage",
+      "pos": [
+        2380.7940031738276,
+        -299.64402148437506
+      ],
+      "size": [
+        315,
+        270
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 925
+        }
+      ],
+      "properties": {},
+      "widgets_values": [
+        "TCD"
+      ]
+    },
+    {
+      "id": 333,
+      "type": "SamplerTCD",
+      "pos": [
+        1028.794003173828,
+        268.355978515625
+      ],
+      "size": {
+        "0": 315,
+        "1": 58
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            909
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerTCD"
+      },
+      "widgets_values": [
+        0.3
       ]
     }
   ],
@@ -606,14 +633,22 @@
       240,
       2,
       "CONDITIONING"
+    ],
+    [
+      925,
+      244,
+      0,
+      338,
+      0,
+      "IMAGE"
     ]
   ],
   "groups": [
     {
-      "title": "LCM txt2img",
+      "title": "TCD txt2img",
       "bounding": [
-        4,
-        3,
+        253,
+        -479,
         2478,
         1318
       ],
