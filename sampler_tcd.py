@@ -5,6 +5,8 @@ from itertools import product
 import torch
 from torch import nn
 
+def sample_tcd_lcm
+
 @torch.no_grad()
 def sample_tcd(model, x, sigmas, extra_args=None, callback=None, disable=None, noise_sampler=None, gamma=0.3):
     """TCD sampling with a DDPMSampler_step-like process."""
@@ -29,48 +31,55 @@ def sample_tcd(model, x, sigmas, extra_args=None, callback=None, disable=None, n
         # if sigma_down < 0:
         #     sigma_down = torch.tensor(1.0)
 
+
+        # The following is equivalent to the comfy DDPM implementation
         # x = DDPMSampler_step(x / torch.sqrt(1.0 + sigma_from ** 2.0), sigma_from, sigma_to, (x - denoised) / sigma_from, noise_sampler)
+
         noise_est = (x - denoised) / sigma_from
         x /= torch.sqrt(1.0 + sigma_from ** 2.0)
-        alpha_cumprod = 1 / ((sigma_from * sigma_from) + 1)
-        alpha_cumprod_prev = 1 / ((sigma_to * sigma_to) + 1)
-        alpha_cumprod_down = 1 / ((sigma_down * sigma_down) + 1)
+
+        alpha_cumprod = 1 / ((sigma_from * sigma_from) + 1)  # _t
+        alpha_cumprod_prev = 1 / ((sigma_to * sigma_to) + 1) # _t_prev
         alpha = (alpha_cumprod / alpha_cumprod_prev)
 
+        ## These values should approach 1.0?
+        # print(f"alpha_cumprod: {alpha_cumprod}")
+        # print(f"alpha_cumprod_prev: {alpha_cumprod_prev}")
+        # print(f"alpha: {alpha}")
+
+
+        # alpha_cumprod_down = 1 / ((sigma_down * sigma_down) + 1)  # _s
+        # alpha_d = (alpha_cumprod_prev / alpha_cumprod_down)
+        # alpha2 = (alpha_cumprod / alpha_cumprod_down)
+        # print(f"** alpha_cumprod_down: {alpha_cumprod_down}")
+        # print(f"** alpha_d: {alpha_d}, alpha2: #{alpha2}")
+
+        # epsilon noise prediction from comfy DDPM implementation
         x = (1.0 / alpha).sqrt() * (x - (1 - alpha) * noise_est / (1 - alpha_cumprod).sqrt())
-        if sigma_to > 0:
-            noise = noise_sampler(sigma_from, sigma_to)
-            x += ((1 - alpha) * (1. - alpha_cumprod_prev) / (1. - alpha_cumprod)).sqrt() * noise
+        # x = (1.0 / alpha_d).sqrt() * (x - (1 - alpha) * noise_est / (1 - alpha_cumprod).sqrt())
+
+        first_step = sigma_to == 0
+        last_step = i == len(sigmas) - 2
+
+        if not first_step:
+            if gamma > 0 and not last_step:
+                noise = noise_sampler(sigma_from, sigma_to)
+
+                # x += ((1 - alpha_d) * (1. - alpha_cumprod_prev) / (1. - alpha_cumprod)).sqrt() * noise
+                variance = ((1 - alpha_cumprod_prev) / (1 - alpha_cumprod)) * (1 - alpha_cumprod / alpha_cumprod_prev)
+                x += variance.sqrt() * noise # scale noise by std deviation
+
+                # relevant diffusers code from scheduling_tcd.py
+                # prev_sample = (alpha_prod_t_prev / alpha_prod_s).sqrt() * pred_noised_sample + (
+                #     1 - alpha_prod_t_prev / alpha_prod_s
+                # ).sqrt() * noise
+
             x *= torch.sqrt(1.0 + sigma_to ** 2.0)
 
         # beta_cumprod_t = 1 - alpha_cumprod
         # beta_cumprod_s = 1 - alpha_cumprod_down
 
-        # # variance = ((1 - alpha_cumprod_next) / (1 - alpha_cumprod)) * (1 - alpha_cumprod / alpha_cumprod_next)
-
-        # alpha0 = (alpha_cumprod / alpha_cumprod_next)
-        # # alpha0 = (alpha_cumprod / alpha_cumprod_down)
-
-            # pred_noised_sample = alpha_prod_s.sqrt() * pred_original_sample + beta_prod_s.sqrt() * pred_epsilon
-
-        # # epsilon noise prediction
-        # x = (1.0 / alpha0).sqrt() * (x - (1 - alpha0) * denoised / (1 - alpha_cumprod).sqrt())
-
-        # # x = (1.0 / alpha0).sqrt() * (x - (1 - alpha0) * denoised / (1 - alpha_cumprod_down).sqrt())
-
-        # # x = (1.0 / alpha0).sqrt() * (x - (1-alpha_cumprod).sqrt() * denoised) + (1-alpha_cumprod_down).sqrt() * denoised
-
-
-        # # DDPM sampler step, with added gamma conditional
-        # first_step = sigma_to <= 0
-        # last_step = i == len(sigmas) - 2
-        # if gamma > 0 and not (first_step or last_step):
-        #     noise = noise_sampler(sigma_from, sigma_to) # sigma_down?
-        #     # x += ((1 - alpha0) * (1. - alpha_cumprod_next) / (1. - alpha_cumprod)).sqrt() * noise
-        #     x += ((1 - alpha0) * (1. - alpha_cumprod_next) / (1. - alpha_cumprod)).sqrt() * noise
-
-        # print(sigmas[i], sigmas[i+1], alpha,mu,x)
-
+ 
     return x
 
 class TCDScheduler:
