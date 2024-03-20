@@ -1,0 +1,917 @@
+{
+  "last_node_id": 346,
+  "last_link_id": 937,
+  "nodes": [
+    {
+      "id": 88,
+      "type": "ReroutePrimitive|pysssss",
+      "pos": [
+        2080,
+        2060
+      ],
+      "size": [
+        1,
+        30
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "value",
+          "type": "*",
+          "link": null,
+          "label": " "
+        }
+      ],
+      "outputs": [
+        {
+          "name": "*",
+          "type": "*",
+          "links": null,
+          "shape": 3,
+          "label": "value"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReroutePrimitive|pysssss"
+      }
+    },
+    {
+      "id": 334,
+      "type": "CLIPSetLastLayer",
+      "pos": [
+        266.7940031738281,
+        61.35597851562491
+      ],
+      "size": {
+        "0": 315,
+        "1": 58
+      },
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 911
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            921,
+            923
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPSetLastLayer"
+      },
+      "widgets_values": [
+        -1
+      ]
+    },
+    {
+      "id": 338,
+      "type": "SaveImage",
+      "pos": [
+        2047,
+        -222
+      ],
+      "size": {
+        "0": 315,
+        "1": 270
+      },
+      "flags": {},
+      "order": 15,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 925
+        }
+      ],
+      "properties": {},
+      "widgets_values": [
+        "TCD"
+      ]
+    },
+    {
+      "id": 240,
+      "type": "SamplerCustom",
+      "pos": [
+        1377,
+        84
+      ],
+      "size": {
+        "0": 361.8183288574219,
+        "1": 442
+      },
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 918
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 922
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 924
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 909,
+          "slot_index": 3
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 908,
+          "slot_index": 4
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 844,
+          "slot_index": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            926
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": [],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustom"
+      },
+      "widgets_values": [
+        true,
+        0,
+        "fixed",
+        2.5
+      ]
+    },
+    {
+      "id": 335,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        774,
+        -192
+      ],
+      "size": {
+        "0": 315,
+        "1": 82
+      },
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 914
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            918,
+            920,
+            927
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "accelerators/TCD-SDXL-LoRA.safetensors",
+        1
+      ]
+    },
+    {
+      "id": 345,
+      "type": "VAEDecode",
+      "pos": [
+        1804,
+        460
+      ],
+      "size": {
+        "0": 140,
+        "1": 50
+      },
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 930
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 931
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            929
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 4,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        288.7940031738281,
+        -161.64402148437506
+      ],
+      "size": {
+        "0": 290,
+        "1": 100
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            914
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            911
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            928,
+            931
+          ],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "sd_xl_base_1.0.safetensors"
+      ]
+    },
+    {
+      "id": 336,
+      "type": "CLIPTextEncode",
+      "pos": [
+        620.7940031738284,
+        21.355978515624997
+      ],
+      "size": {
+        "0": 393,
+        "1": 101
+      },
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 921
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            922,
+            932
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "a happy monkey"
+      ]
+    },
+    {
+      "id": 233,
+      "type": "EmptyLatentImage",
+      "pos": [
+        746,
+        342
+      ],
+      "size": {
+        "0": 210,
+        "1": 110
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            844,
+            936
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 295,
+      "type": "PreviewImage",
+      "pos": [
+        1872,
+        -467
+      ],
+      "size": {
+        "0": 770,
+        "1": 800
+      },
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 768
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 244,
+      "type": "VAEDecode",
+      "pos": [
+        1655,
+        -81
+      ],
+      "size": {
+        "0": 140,
+        "1": 50
+      },
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 926
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 928
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            768,
+            925
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 344,
+      "type": "PreviewImage",
+      "pos": [
+        1836,
+        440
+      ],
+      "size": {
+        "0": 770,
+        "1": 800
+      },
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 929
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 332,
+      "type": "TCDScheduler",
+      "pos": [
+        1038,
+        341
+      ],
+      "size": {
+        "0": 315,
+        "1": 82
+      },
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 920
+        }
+      ],
+      "outputs": [
+        {
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            908,
+            935
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "TCDScheduler"
+      },
+      "widgets_values": [
+        8
+      ]
+    },
+    {
+      "id": 340,
+      "type": "SamplerCustom",
+      "pos": [
+        1381,
+        564
+      ],
+      "size": {
+        "0": 361.8183288574219,
+        "1": 442
+      },
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 927
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 932
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 933
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 934,
+          "slot_index": 3
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 935,
+          "slot_index": 4
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 936,
+          "slot_index": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            930
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": [],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustom"
+      },
+      "widgets_values": [
+        true,
+        0,
+        "fixed",
+        2.5
+      ]
+    },
+    {
+      "id": 337,
+      "type": "CLIPTextEncode",
+      "pos": [
+        619.7940031738284,
+        178.35597851562494
+      ],
+      "size": {
+        "0": 393,
+        "1": 97
+      },
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 923
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            924,
+            933
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "zoo"
+      ]
+    },
+    {
+      "id": 333,
+      "type": "SamplerTCD",
+      "pos": [
+        1037,
+        148
+      ],
+      "size": {
+        "0": 315,
+        "1": 58
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            909
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerTCD"
+      },
+      "widgets_values": [
+        1
+      ]
+    },
+    {
+      "id": 339,
+      "type": "SamplerTCD EulerA",
+      "pos": [
+        1013,
+        630
+      ],
+      "size": {
+        "0": 315,
+        "1": 58
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            934
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerTCD EulerA"
+      },
+      "widgets_values": [
+        1
+      ]
+    }
+  ],
+  "links": [
+    [
+      768,
+      244,
+      0,
+      295,
+      0,
+      "IMAGE"
+    ],
+    [
+      844,
+      233,
+      0,
+      240,
+      5,
+      "LATENT"
+    ],
+    [
+      908,
+      332,
+      0,
+      240,
+      4,
+      "SIGMAS"
+    ],
+    [
+      909,
+      333,
+      0,
+      240,
+      3,
+      "SAMPLER"
+    ],
+    [
+      911,
+      4,
+      1,
+      334,
+      0,
+      "CLIP"
+    ],
+    [
+      914,
+      4,
+      0,
+      335,
+      0,
+      "MODEL"
+    ],
+    [
+      918,
+      335,
+      0,
+      240,
+      0,
+      "MODEL"
+    ],
+    [
+      920,
+      335,
+      0,
+      332,
+      0,
+      "MODEL"
+    ],
+    [
+      921,
+      334,
+      0,
+      336,
+      0,
+      "CLIP"
+    ],
+    [
+      922,
+      336,
+      0,
+      240,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      923,
+      334,
+      0,
+      337,
+      0,
+      "CLIP"
+    ],
+    [
+      924,
+      337,
+      0,
+      240,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      925,
+      244,
+      0,
+      338,
+      0,
+      "IMAGE"
+    ],
+    [
+      926,
+      240,
+      0,
+      244,
+      0,
+      "LATENT"
+    ],
+    [
+      927,
+      335,
+      0,
+      340,
+      0,
+      "MODEL"
+    ],
+    [
+      928,
+      4,
+      2,
+      244,
+      1,
+      "VAE"
+    ],
+    [
+      929,
+      345,
+      0,
+      344,
+      0,
+      "IMAGE"
+    ],
+    [
+      930,
+      340,
+      0,
+      345,
+      0,
+      "LATENT"
+    ],
+    [
+      931,
+      4,
+      2,
+      345,
+      1,
+      "VAE"
+    ],
+    [
+      932,
+      336,
+      0,
+      340,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      933,
+      337,
+      0,
+      340,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      934,
+      339,
+      0,
+      340,
+      3,
+      "SAMPLER"
+    ],
+    [
+      935,
+      332,
+      0,
+      340,
+      4,
+      "SIGMAS"
+    ],
+    [
+      936,
+      233,
+      0,
+      340,
+      5,
+      "LATENT"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "TCD txt2img",
+      "bounding": [
+        253,
+        -479,
+        2478,
+        1318
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "locked": false
+    }
+  ],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}
