@@ -121,7 +121,7 @@
     },
     {
       "id": 333,
-      "type": "SamplerTCD",
+      "type": "SamplerTCD EulerA",
       "pos": [
         1028.794003173828,
         268.355978515625
