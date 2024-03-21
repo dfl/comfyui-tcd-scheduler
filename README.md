@@ -4,9 +4,9 @@ ComfyUI Custom Sampler nodes that implement Zheng et al.'s Trajectory Consistenc
 
 This custom node repository adds `TCDScheduler`, `SamplerTCD Euler A`, and `SamplerTCD` nodes to the Custom Sampler category.
 
-NOTE: `SamplerTCD` is a WIP and currently just operates as DDIM with no gamma parameter. Please use `SamplerTCD Euler A` if you want to play with gamma.
-
 Just clone it into your custom_nodes folder and you can start using it as soon as you restart ComfyUI.
+
+NOTE: `SamplerTCD` is a WIP and currently just operates as DDIM with no gamma parameter. Please use `SamplerTCD Euler A` for the time being.
 
 `LCMScheduler` has one special parameter:
 

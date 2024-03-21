@@ -36,7 +36,7 @@ def sample_tcd_euler_a(model, x, sigmas, extra_args=None, callback=None, disable
         x += d * dt
 
         if sigma_to > 0 and gamma > 0:
-            x += noise_sampler(sigma_from, sigma_to) * sigma_up
+            x = model.inner_model.inner_model.model_sampling.noise_scaling(sigma_up, noise_sampler(sigma_from, sigma_to), x)
     return x
 
 
