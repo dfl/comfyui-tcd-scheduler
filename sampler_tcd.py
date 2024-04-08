@@ -130,8 +130,10 @@ class TCDScheduler:
     FUNCTION = "get_sigmas"
 
     def get_sigmas(self, model, steps):
-        sigmas = comfy.samplers.calculate_sigmas_scheduler(model.model, "ddim_uniform", steps).cpu()
-        return (sigmas, )
+        sigmas = comfy.samplers.calculate_sigmas(
+            model.get_model_object("model_sampling"), "ddim_uniform", steps
+        ).cpu()
+        return (sigmas,)
 
 class SamplerTCD:
     @classmethod
